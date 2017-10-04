@@ -65,24 +65,27 @@ int main() {
     clear_registers();
     link_codes();
     
-    int l = load_file("xe", m, 0x0F);
+    int l = load_file("xe", m, 0xFF);
     
     if(!l)
         return 404;
     
     for(byte b; *pc<0xFF && m[*pc] != 0x0F; (*pc)++) {
         r[8] = r[9] = 0;
-        b = m[*pc];
-        printf("[%02X][%02X] ", *pc, b);
-        
-        CODE *c = opcode[b];
-        if(c) {
-            for(int i=0; i<c->args && i<2; i++)
-                r[8+i] = m[++(*pc)];
-            r[0xA] = (b&~c->mask);//-c->offs;
-            printf("(%01X: %02X %02X) ", r[0xA], r[8], r[9]);
-            c->fn();
+        if(b = m[*pc]) {
+            printf("[%02X][%02X] ", *pc, b);
+            
+            CODE *c = opcode[b];
+            if(c) {
+                for(int i=0; i<c->args && i<2; i++)
+                    r[8+i] = m[++(*pc)];
+                r[0xA] = (b&~c->mask);//-c->offs;
+                printf("(%01X: %02X %02X) ", r[0xA], r[8], r[9]);
+                c->fn();
+            }
+            printf("\n");
         }
-        printf("\n");
     }
+    pnc();
+    printf("\n");
 }
