@@ -6,7 +6,7 @@
 #include "reg.h"
 
 #define LONG(a,b) (a<<8)|b
-#define HI(a) (a&0xF0)>>4
+#define HI(a) ((a&0xF0)>>4)
 #define LO(a) (a&0x0F)
 
 void nop();
@@ -14,6 +14,7 @@ void opr();
 void ldn();
 void ldm();
 void jmp();
+void jpc();
 void pnc();
 
 #endif

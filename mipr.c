@@ -26,6 +26,7 @@ CODE nosort_codes[0xFF] = {
     { 1, 0x10, 0x17, 0xF0, 0x00, 1, 0, ldn },   // Load 8 from Next
     { 1, 0x18, 0x1F, 0xF0, 0x0A, 2, 0, ldm },   // Load 8 from Memory
     { 1, 0x20, 0x24, 0xF0, 0x00, 2, 0, jmp },   // Jump to MemAddr
+    { 1, 0x25, 0x27, 0xF0, 0x05, 1, 0, jpc },   // Compare and Execute
     { 1, 0xFF, 0xFF, 0xFF, 0x00, 0, 0, pnc },   // PANIC
     { 0 }                                       // NULL TERMINATOR
 };
@@ -79,7 +80,7 @@ int main() {
             if(c) {
                 for(int i=0; i<c->args && i<2; i++)
                     r[8+i] = m[++(*pc)];
-                r[0xA] = (b&~c->mask);//-c->offs;
+                r[0xA] = (b&~c->mask)-c->offs;
                 printf("(%01X: %02X %02X) ", r[0xA], r[8], r[9]);
                 c->fn();
             }

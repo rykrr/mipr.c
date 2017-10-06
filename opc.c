@@ -13,36 +13,51 @@ void nop() {
 }
 
 void opr() {
+    
+    int hi = HI(r[8])%8,
+        lo = LO(r[8])%8;
+    
     switch(r[0xA]) {
         case 1:
-            if(0xFF<r[HI(r[8])]+r[LO(r[8])])
+            if(0xFF<r[hi]+r[lo])
                 r[0xF] |= OVERFLOW;
             else
                 r[0xF] &= ~OVERFLOW;
-            r[HI(r[8])] += r[LO(r[8])];
+            r[hi] += r[lo];
+            printf("%02X + %02X", hi, lo);
             break;
         case 2:
-            if(0xFF<r[HI(r[8])]*r[LO(r[8])])
+            if(0xFF<r[hi]*r[lo])
                 r[0xF] |= OVERFLOW;
             else
                 r[0xF] &= ~OVERFLOW;
-            r[HI(r[8])] *= r[LO(r[8])];
+            r[hi] *= r[lo];
             break;
         case 3:
-            if(r[HI(r[8])]-r[LO(r[8])]<0) {
+            if(r[hi]-r[lo]<0) {
                 r[0xF] |= NEGATIVE;
-                r[HI(r[8])] = -1*(r[HI(r[8])] - r[LO(r[8])]);
+                r[hi] = -1*(r[hi] - r[lo]);
             }
             else {
                 r[0xF] &= ~NEGATIVE;
-                r[HI(r[8])] -= r[LO(r[8])];
+                r[hi] -= r[lo];
             }
             break;
         case 4:
-            if(r[HI(r[8])])
-                r[HI(r[8])] /= r[LO(r[8])];
+            if(r[hi])
+                r[hi] /= r[lo];
             break;
         case 5:
+            r[hi] &= r[lo];
+            break;
+        case 6:
+            r[hi] |= r[lo];
+            break;
+        case 7:
+            r[hi] = (r[hi]|r[lo])&~(r[hi]&r[lo]);
+            break;
+        case 8:
+            r[hi] = ~r[hi];
             break;
     }
 }
@@ -61,6 +76,30 @@ void jmp() {
         *pc = LONG(r[8],r[9])-1;
         printf(" -> %04X", *pc);
     }
+}
+
+void jpc() {
+    int hi = HI(r[8]), lo = LO(r[8]);
+    
+    switch(r[0xA]) {
+        case 0:
+            printf("%02X < %02X", r[hi], r[lo]);
+            if(r[hi]<r[lo])
+                break;
+            return;
+        case 1:
+            printf("%02X > %02X", r[hi], r[lo]);
+            if(r[hi]>r[lo])
+                break;
+            return;
+        case 2:
+            printf("%02X == %02X", r[hi], r[lo]);
+            if(r[hi]==r[lo])
+                break;
+            return;
+    };
+    
+    *pc+=3;
 }
 
 void pnc() {
