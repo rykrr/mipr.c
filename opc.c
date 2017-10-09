@@ -24,7 +24,7 @@ void opr() {
             else
                 r[0xF] &= ~OVERFLOW;
             r[hi] += r[lo];
-            printf("%02X + %02X", hi, lo);
+            //printf("%02X + %02X", hi, lo);
             break;
         case 2:
             if(0xFF<r[hi]*r[lo])
@@ -71,10 +71,10 @@ void ldm() {
 }
 
 void jmp() {
-    printf("%02X & %02X", r[0xF], r[0xA]);
+    //printf("%02X & %02X", r[0xF], r[0xA]);
     if(!r[0xA]||r[0xF]&r[0xA]) {
         *pc = LONG(r[8],r[9])-1;
-        printf(" -> %04X", *pc);
+        //printf(" -> %04X", *pc);
     }
 }
 
@@ -83,17 +83,14 @@ void jpc() {
     
     switch(r[0xA]) {
         case 0:
-            printf("%02X < %02X", r[hi], r[lo]);
             if(r[hi]<r[lo])
                 break;
             return;
         case 1:
-            printf("%02X > %02X", r[hi], r[lo]);
             if(r[hi]>r[lo])
                 break;
             return;
         case 2:
-            printf("%02X == %02X", r[hi], r[lo]);
             if(r[hi]==r[lo])
                 break;
             return;
