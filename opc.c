@@ -9,11 +9,10 @@
 #define NEGATIVE 4
 
 void nop() {
-
+    ;;
 }
 
 void opr() {
-    
     int hi = HI(r[8])%8,
         lo = LO(r[8])%8;
     
@@ -71,11 +70,8 @@ void ldm() {
 }
 
 void jmp() {
-    //printf("%02X & %02X", r[0xF], r[0xA]);
-    if(!r[0xA]||r[0xF]&r[0xA]) {
+    if(!r[0xA]||r[0xF]&r[0xA])
         *pc = LONG(r[8],r[9])-1;
-        //printf(" -> %04X", *pc);
-    }
 }
 
 void jpc() {
@@ -103,4 +99,32 @@ void pnc() {
     printf("\nPANIC: ");
     for(int x=0; x<16; x++)
         printf("%02X ", r[x]);
+}
+
+void swr() {
+    if(!r[0xA] && *pc>0x1000 && r[0xA]<4) {
+        r[0xF] = 0xFF;
+        return;
+    }
+    r  = rs[r[0xA]];
+    sp = (sppc*)&r[0xB];
+    pc = (sppc*)&r[0xD];
+}
+
+void mme() {
+    if(*pc<0x1000) {
+        
+    }
+    else {
+        // Unprivileged Kernel Request Information
+    }
+}
+
+void tra() {
+    if(*pc<0x1000) {
+        
+    }
+    else {
+        // Unprivileged Kernel Request Information
+    }
 }
