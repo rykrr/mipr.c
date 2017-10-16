@@ -112,8 +112,8 @@ void swr() {
 }
 
 void mme() {
+    
     if(*pc<0x1000) {
-        
     }
     else {
         // Unprivileged Kernel Request Information

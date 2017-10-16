@@ -21,7 +21,7 @@ typedef struct code {
     void (*fn)();
 } CODE;
 
-CODE nosort_codes[0xFF] = {
+CODE mipr_conf[0xFF] = {
     { 1, 0x00, 0x00, 0xFF, 0x00, 0, 0, nop },   // No Operation
     { 1, 0x01, 0x09, 0xF0, 0x00, 1, 0, opr },   // MISC Operation
     { 1, 0x10, 0x17, 0xF0, 0x00, 1, 0, ldn },   // Load 8 from Next
@@ -40,9 +40,9 @@ void link_codes() {
     for(int i=0; i<0xFF; i++)
         opcode[i] = NULL;
     
-    for(int x=0; nosort_codes[x].on; x++)
-        for(int y=nosort_codes[x].lo; y<=nosort_codes[x].hi; y++)
-            opcode[y] = &nosort_codes[x];
+    for(int x=0; mipr_conf[x].on; x++)
+        for(int y=mipr_conf[x].lo; y<=mipr_conf[x].hi; y++)
+            opcode[y] = &mipr_conf[x];
 }
 
 void clear_registers() {
