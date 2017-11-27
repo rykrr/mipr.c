@@ -77,19 +77,23 @@ void jpc() {
     
     switch(r[0xA]) {
         case 0:
+            printf("%2X < %2X\n", hi, lo);
             if(r[hi]<r[lo])
                 break;
             return;
         case 1:
+            printf("%2X > %2X\n", hi, lo);
             if(r[hi]>r[lo])
                 break;
             return;
         case 2:
+            printf("%2X == %2X\n", hi, lo);
             if(r[hi]==r[lo])
                 break;
             return;
     };
     
+    printf("Passed\n");
     *pc+=3;
 }
 
