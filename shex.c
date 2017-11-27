@@ -102,6 +102,14 @@ void new(HEX *h, int fb, int v) {
         return;
     }
     
+    if(fb && !h->prev) {
+        TOP = malloc(sizeof(HEX));
+        *TOP = (HEX){v, NULL, h};
+        h->prev = TOP;
+        reindex();
+        return;
+    }
+    
     HEX *x = (fb?h->prev:h->next);
     
     HEX *n = malloc(sizeof(HEX));
@@ -270,8 +278,15 @@ void draw(int o, int s) {
         for(int j=0; j<mod && mod*(i+off)+j<len; j++) {
             if(cur == (off+i)*mod+j)
                 attron(A_BOLD);
-            mvprintw(i, mid+(3*j), "%02X", IX[(off+i)*mod+j]->hex);
-            attroff(A_BOLD);
+            else if(!IX[(off+i)*mod+j]->hex)
+                attron(A_DIM);
+            
+            if(!IX[(off+i)*mod+j]->hex)
+                mvprintw(i, mid+(3*j), "--");
+            else
+                mvprintw(i, mid+(3*j), "%02X", IX[(off+i)*mod+j]->hex);
+            
+            attroff(A_BOLD|A_DIM);
         }
     }
     
@@ -313,8 +328,6 @@ int main(int argc, char *argv[]) {
     stat(argv[1]);
     getch();
     
-    char c;
-    int off = 0;
     int xmode = 0;
     int modi = 0;
     int quit = 0;
@@ -335,8 +348,12 @@ int main(int argc, char *argv[]) {
             case 'h':
                 draw(0, -1);
                 break;
-            case 'i':
+            case 'n':
                 new(IX[cur], 0, 0);
+                draw(0, 0);
+                break;
+            case 'i':
+                new(IX[cur], 1, 0);
                 draw(0, 0);
                 break;
             case 's':

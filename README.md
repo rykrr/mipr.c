@@ -1,2 +1,2 @@
-# mipr.c
-Simple Microprocessor in C
+# micro.c
+Simple 8-bit Microprocessor in C
