@@ -51,7 +51,7 @@ void opr() {
             r[hi] |= r[lo];
             break;
         case 7:
-            r[hi] = (r[hi]|r[lo])&~(r[hi]&r[lo]);
+            r[hi] ^= r[lo];
             break;
         case 8:
             r[hi] = ~r[hi];
@@ -116,6 +116,7 @@ void swr() {
 void mme() {
     
     if(*pc<0x1000) {
+        
     }
     else {
         // Unprivileged Kernel Request Information
