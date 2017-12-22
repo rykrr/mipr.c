@@ -5,5 +5,6 @@
 
 extern byte dxm;
 int debug(byte b, byte c);
+void sdb();
 
 #endif

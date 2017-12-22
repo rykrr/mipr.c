@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <ncurses.h>
 
 #define HEXLIM 65536*2
@@ -214,7 +215,7 @@ void draw(int o, int s) {
     //mod = (mx/6)-2;
     mod = 32;
     mid = (mx-mod)/2;
-    mod = 12;
+    mod = 16;
     dx  = len/mod + (len%mod?1:0);
     
     for(int i=0; i<my; i++)
@@ -298,7 +299,6 @@ void draw(int o, int s) {
     if(len) {
         attron(A_BOLD);
         mvprintw(row, mid+3*(cur%mod)-1, "[");
-        mvprintw(row, mid+3*(cur%mod)-1, "[");
         mvprintw(row, mid+3*(cur%mod)+2, "]");
         attroff(A_BOLD);
     }
@@ -309,6 +309,7 @@ int main(int argc, char *argv[]) {
     printf("shex.c: Simple Hex Editor\nCopyright (c) 2017 Ryan Kerr\n");
     
     setbuf(stdout, NULL);
+    signal(SIGINT, delall);
     reindex();
     
     if(argc == 2)
@@ -366,7 +367,7 @@ int main(int argc, char *argv[]) {
                 break;
             case 'g':
                 if(len)
-                    cur = 0;
+                    cur = row = 0;
                 draw(0, 0);
                 break;
             case 'q':

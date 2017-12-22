@@ -21,7 +21,6 @@ void opr() {
             else
                 r[0xF] &= ~OVERFLOW;
             r[hi] += r[lo];
-            //printf("%02X + %02X", hi, lo);
             break;
         case 2:
             if(0xFF<r[hi]*r[lo])
@@ -77,23 +76,19 @@ void jpc() {
     
     switch(r[0xA]) {
         case 0:
-            printf("%2X < %2X\n", hi, lo);
             if(r[hi]<r[lo])
                 break;
             return;
         case 1:
-            printf("%2X > %2X\n", hi, lo);
             if(r[hi]>r[lo])
                 break;
             return;
         case 2:
-            printf("%2X == %2X\n", hi, lo);
             if(r[hi]==r[lo])
                 break;
             return;
     };
     
-    printf("Passed\n");
     *pc+=3;
 }
 
@@ -101,6 +96,22 @@ void pnc() {
     printf("\nPANIC: ");
     for(int x=0; x<16; x++)
         printf("%02X ", r[x]);
+    for(int i=0; i<0x2000; i++)
+        fprintf(stderr, "%02X ", m[i]);
+}
+
+void frk() {
+    pid_t c = fork(), *d = (pid_t*) &r[3];
+    if(!c) *pc = LONG(r[8], r[9])-1;
+    *d = c;
+}
+
+void sig() {
+    
+}
+
+void sih() {
+
 }
 
 void swr() {

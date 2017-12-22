@@ -9,8 +9,16 @@ int debug(byte b, byte c) {
         for(int i=0; i<16; i++)
             printf("[ %X | %02X ] ", i, r[i]);
         
-        fgetc(stdin);
+        char c = fgetc(stdin);
+        if(c == 's')
+            sdb();
         return 1;
     }
     return 0;
+}
+void sdb() {
+    printf("\nStack Dump\n");
+    for(int i=0; i<5; i++)
+        printf("%02X ", m[*sp+i]);
+    printf("\n");
 }
