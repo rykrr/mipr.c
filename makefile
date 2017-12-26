@@ -1,20 +1,20 @@
 CC=gcc
-CFLAGS=-lncurses -g -Wall
+CFLAGS=-lncurses -g -Wall -Iincludes
 
-micro: obj/micro.o obj/ax.o obj/dx.o
-	$(CC) $(CFLAGS) -o micro obj/micro.o obj/ax.o obj/dx.o
+OBJDIR=obj
+OBJ=$(addprefix $(OBJDIR)/, ax.o cx.o dx.o rx.o qx.o)
 
-obj/micro.o: micro.c
-	$(CC) $(CFLAGS) -c micro.c -o obj/micro.o
+micro: obj/micro.o $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $< $(OBJ)
 
-obj/ax.o: ax.c ax.h
-	$(CC) $(CFLAGS) -c ax.c -o obj/ax.o
+obj/micro.o: src/micro.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-obj/dx.o: dx.c dx.h
-	$(CC) $(CFLAGS) -c dx.c -o obj/dx.o
+$(OBJ): $(OBJDIR)/%.o: src/%.c includes/%.h
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-hex:
-	$(CC) $(CFLAGS) -o hex shex.c
+hex: src/shex.c
+	$(CC) $(CFLAGS) -o hex src/shex.c
 
 clean:
 	rm obj/*.o
