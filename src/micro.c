@@ -30,6 +30,7 @@ int main() {
     int l = load_file("xe", m, 0x150);
     if(!l) return 404;
     
+    puts("START\n");
     for(_1 b; *pc<0x150 && m[*pc] != 0x0F; (*pc)++) {
         r[8] = r[9] = 0;
         if((b = m[*pc])) {
@@ -49,5 +50,5 @@ int main() {
             }
         }
     }
-    puts("end");
+    puts("\n\nEND");
 }

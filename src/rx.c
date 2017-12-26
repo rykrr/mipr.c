@@ -38,30 +38,31 @@ void ldm() {
 
 /* 0x01 */
 void ldx() {
-    printf("[ldx] %02X\n", *re);
+    printf("[ldx] %04X (%02X & %02X)\n", *re, r[8], r[9]);
     *ab = *re;
 }
 
 void jmp() {
-    printf("[jmp] %02X -> %02X\n", *pc, *ab-1);
+    printf("[jmp] %04X -> %04X\n", *pc, *ab-1);
     *pc = *ab-1;
 }
 
 void jpc() {
     printf("[jpc] %02X -> %02X\n", *pc, *ab-1);
     int hi = HI(r[8]), lo = LO(r[8]);
+    printf("[jpc] %02X (<=>) %02X\n", r[hi], r[lo]);
     
     switch(r[0xA]) {
         case 0:
-            if(r[hi]>=r[lo])
+            if(r[hi]<r[lo])
                 break;
             return;
         case 1:
-            if(r[hi]<=r[lo])
+            if(r[hi]>r[lo])
                 break;
             return;
         case 2:
-            if(r[hi]!=r[lo])
+            if(r[hi]==r[lo])
                 break;
             return;
     };
@@ -75,10 +76,10 @@ void med() {
 }
 
 void map() {
-    printf("[map] ");
+    printf("[map] (%04X) ", *re);
     for(int i=0; m[*pc]; i++) {
         printf("%02X ", m[*pc]);
-        m[*re+i] = m[(*pc)++];
+        m[*re+i] = m[++(*pc)];
     }
     puts("");
 }
