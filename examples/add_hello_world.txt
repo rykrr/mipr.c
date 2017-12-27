@@ -15,7 +15,7 @@ A0 34                                           Turn Alphabet-Index to ASCII (Ad
                                                
 A0 75                                           Move pointer forward (Add R7 to R5)
                                                
-01 40 01                22 23                   If char in R3 matches R2, jump to x140
-01 70                   02                      Else jump to x80
+01 30 01                22 23                   If char in R3 matches R2, jump to x130
+01 70                   02                      Else jump to x70
                                             
 E1 50 01                                        Print contents of x150
